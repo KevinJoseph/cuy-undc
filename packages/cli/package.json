@@ -2,6 +2,13 @@
   "name": "cuy-undc",
   "version": "0.1.2",
   "description": "CLI que despierta a Cuy UNDC en tu escritorio",
+  "license": "MIT",
+  "keywords": [
+    "electron",
+    "desktop-pet",
+    "cli",
+    "undc"
+  ],
   "bin": {
     "cuy-undc": "dist/index.js"
   },

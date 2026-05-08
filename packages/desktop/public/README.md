@@ -2,6 +2,8 @@
 
 Assets estáticos del renderer. Vite los sirve en la raíz (`/archivo.ext`).
 
+Proyecto: https://www.cuy-undc.net.pe
+
 ## Mascota
 
 Coloca aquí el sprite pixel art del cuy con el nombre exacto:

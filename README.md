@@ -6,6 +6,8 @@ Una ventanita flotante, transparente y siempre visible que te acompaña mientras
 
 > MVP. Todo local. Sin backend. Sin base de datos. Solo un cuy en tu pantalla.
 
+Web oficial: https://www.cuy-undc.net.pe
+
 ---
 
 ## ✨ Features V1
