@@ -66,20 +66,6 @@ cd cuy-undc
 npm install
 ```
 
----
-
-## 🎨 Sprite de la mascota (pixel art)
-
-Guarda tu PNG pixel-art en:
-
-```
-packages/desktop/public/mascot.png
-```
-
-- Se renderiza con `image-rendering: pixelated` → conserva el look retro al escalar.
-- Tamaño recomendado: 32×32 o 64×64 px, fondo transparente, cuadrado.
-- Sin archivo → fallback automático a 🐹.
-
 ## ▶️ Ejecución
 
 ### Modo desarrollo (hot-reload del renderer)
