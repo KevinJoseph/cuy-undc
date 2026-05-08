@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "npm run dev --workspace=@cuy-undc/desktop",
     "build": "npm run build --workspace=@cuy-undc/desktop && npm run build --workspace=@cuy-undc/cli",
+    "dist:win": "npm run dist:win --workspace=@cuy-undc/desktop",
     "start": "npm run start --workspace=@cuy-undc/cli",
     "cli": "npm run start --workspace=@cuy-undc/cli",
     "clean": "rm -rf packages/*/dist packages/*/node_modules node_modules"

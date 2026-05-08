@@ -86,6 +86,35 @@ npm run build
 
 Compila el renderer (Vite), el main/preload (tsc) y el CLI.
 
+### Generar instalador `.exe` para Windows
+
+La app de escritorio usa `electron-builder` para empaquetarse.
+
+Desde la raíz del repo:
+
+```bash
+npm run dist:win
+```
+
+O desde `packages/desktop`:
+
+```bash
+npm run dist:win
+```
+
+Los archivos de salida quedan en:
+
+```bash
+packages/desktop/release/
+```
+
+Ahí se generará un instalador NSIS (`.exe`) y una variante portable (`.exe`).
+
+Nota: para builds de Windows, lo más simple y estable es correr ese comando en
+Windows. La documentación oficial de `electron-builder` también indica que
+puedes generar binarios de Windows desde Linux usando Wine o el contenedor
+`electronuserland/builder:wine`.
+
 ### Lanzar vía CLI (después del build)
 
 ```bash
