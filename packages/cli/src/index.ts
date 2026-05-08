@@ -24,7 +24,7 @@ program
   .action(() => {
     console.log('Cuy UNDC esta despertando... ✨');
     console.log('Listo: busca la ventanita en tu escritorio. 🐹');
-    console.log('Desarrollado con ❤️ por Team Satoshi.');
+    console.log('Desarrollado por Team Satoshi.');
     launchElectron();
   });
 
