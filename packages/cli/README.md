@@ -1,6 +1,6 @@
 # cuy-undc
 
-Mascota de escritorio para estudiantes de Sistemas de la UNDC.
+Herramientas ligera, humor dev y una mascota digital creada para sobrevivir el semestre
 
 Web oficial: https://www.cuy-undc.net.pe
 
