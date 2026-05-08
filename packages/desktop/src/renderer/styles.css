@@ -205,6 +205,19 @@ body,
   color: var(--cuy-primary, #f59e0b);
 }
 
+.cuy-version {
+  margin-top: auto;
+  padding-top: 6px;
+  font-family: "Courier New", Monaco, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+  image-rendering: pixelated;
+  text-transform: uppercase;
+}
+
 /* ===== Modo mini: botón circular flotante con la mascota ===== */
 .cuy-mini {
   position: fixed;

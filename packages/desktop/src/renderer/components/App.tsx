@@ -19,6 +19,7 @@ export function App(): JSX.Element {
   const [showSettings, setShowSettings] = useState(false);
   const [mini, setMini] = useState(false);
   const [showBadgeInfo, setShowBadgeInfo] = useState(false);
+  const [appVersion, setAppVersion] = useState('...');
 
   const badge = useMemo(() => badgeForDate(), []);
   const primary = prefs?.primaryColor ?? DEFAULT_PRIMARY_COLOR;
@@ -40,6 +41,18 @@ export function App(): JSX.Element {
     if (mini) return;
     window.cuy.window.setMode(showSettings ? 'expanded' : 'compact');
   }, [mini, showSettings]);
+
+  useEffect(() => {
+    let active = true;
+
+    void window.cuy.app.getVersion().then((version) => {
+      if (active) setAppVersion(version);
+    });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   if (mini) {
     return <MiniCuy primary={primary} onExpand={expand} />;
@@ -81,6 +94,10 @@ export function App(): JSX.Element {
       {showSettings && prefs && (
         <Settings prefs={prefs} onChange={update} />
       )}
+
+      <div className="cuy-version no-drag" title={`Versión actual: ${appVersion}`}>
+        V. {appVersion}
+      </div>
 
       {showBadgeInfo && (
         <Toast

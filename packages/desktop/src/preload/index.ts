@@ -6,6 +6,9 @@ import type { CuyAPI, UserPreferences, WindowMode } from '../shared/types';
  * El renderer NO tiene acceso directo a Node — solo a este API.
  */
 const api: CuyAPI = {
+  app: {
+    getVersion: () => ipcRenderer.invoke('app:get-version') as Promise<string>
+  },
   window: {
     close: () => ipcRenderer.send('window:close'),
     collapse: () => ipcRenderer.send('window:collapse'),

@@ -29,6 +29,10 @@ export interface DailyBadge {
 export type WindowMode = 'compact' | 'expanded' | 'mini';
 
 export interface CuyAPI {
+  app: {
+    /** Devuelve la versión visible para el usuario final. */
+    getVersion: () => Promise<string>;
+  };
   window: {
     close: () => void;
     /** Encoge la ventana a un botón flotante con la mascota. */
