@@ -1,6 +1,6 @@
 {
   "name": "cuy-undc",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CLI que despierta a Cuy UNDC en tu escritorio",
   "bin": {
     "cuy-undc": "dist/index.js"
@@ -11,6 +11,9 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "bundle:desktop": "node ./scripts/bundle-desktop.mjs",
+    "pack:cli": "npm run build --workspace=@cuy-undc/desktop && npm run build && npm run bundle:desktop",
+    "prepack": "npm run pack:cli",
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"

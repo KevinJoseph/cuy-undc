@@ -94,6 +94,30 @@ cuy-undc
 npx cuy-undc
 ```
 
+### Instalar desde npm
+
+Cuando publiques `cuy-undc` en npm, el paquete ya incluirá el build de Electron.
+
+```bash
+npm install -g cuy-undc
+cuy-undc
+```
+
+También funcionará sin instalación global:
+
+```bash
+npx cuy-undc
+```
+
+En Linux, el CLI arranca Electron con `--no-sandbox` para evitar el error de
+`chrome-sandbox` cuando se ejecuta desde el directorio temporal que usa `npx`.
+
+Para verificar localmente el paquete antes de publicarlo:
+
+```bash
+npm pack --workspace=packages/cli
+```
+
 Salida esperada en consola:
 
 ```

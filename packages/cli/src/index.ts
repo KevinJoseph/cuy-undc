@@ -45,7 +45,9 @@ function launchElectron(): void {
     process.exit(1);
   }
 
-  const child = spawn(electronBin, [desktopEntry], {
+  const electronArgs = [desktopEntry, ...resolveElectronArgs()];
+
+  const child = spawn(electronBin, electronArgs, {
     stdio: 'inherit',
     detached: false
   });
@@ -55,6 +57,17 @@ function launchElectron(): void {
     console.error('❌ Error al lanzar Electron:', err.message);
     process.exit(1);
   });
+}
+
+function resolveElectronArgs(): string[] {
+  // `npx` instala el paquete en un directorio temporal dentro de ~/.npm.
+  // En Linux, el helper chrome-sandbox de Electron no conserva ahí el bit SUID,
+  // así que el arranque falla salvo que desactivemos ese sandbox explícitamente.
+  if (process.platform === 'linux') {
+    return ['--no-sandbox'];
+  }
+
+  return [];
 }
 
 /** Localiza el ejecutable de Electron buscando hacia arriba desde este archivo. */
@@ -77,6 +90,9 @@ function resolveElectronBinary(): string | null {
  * 2) como hermano dentro del monorepo (../desktop/dist/main/index.js)
  */
 function resolveDesktopEntry(): string | null {
+  const bundled = resolve(__dirname, 'desktop', 'main', 'index.js');
+  if (existsSync(bundled)) return bundled;
+
   try {
     return require.resolve('@cuy-undc/desktop');
   } catch {
