@@ -1,0 +1,93 @@
+import { useEffect, useMemo, useState } from 'react';
+import { usePrefs } from '../hooks/usePrefs';
+import { randomPhrase } from '../../shared/phrases';
+import { badgeForDate } from '../../shared/badges';
+import { TopBar } from './TopBar';
+import { Mascot } from './Mascot';
+import { Settings } from './Settings';
+import { MiniCuy } from './MiniCuy';
+import { Toast } from './Toast';
+
+/**
+ * Componente raíz. Compone la tarjeta flotante.
+ * Lógica de datos vive en hooks/shared, este archivo solo orquesta UI.
+ */
+export function App(): JSX.Element {
+  const { prefs, update } = usePrefs();
+  const [phrase, setPhrase] = useState<string>(() => randomPhrase());
+  const [showSettings, setShowSettings] = useState(false);
+  const [mini, setMini] = useState(false);
+  const [showBadgeInfo, setShowBadgeInfo] = useState(false);
+
+  const badge = useMemo(() => badgeForDate(), []);
+  const primary = prefs?.primaryColor ?? '#7c3aed';
+  const name = prefs?.studentName ?? '';
+
+  const collapse = (): void => {
+    setMini(true);
+    window.cuy.window.collapse();
+  };
+
+  const expand = (): void => {
+    setMini(false);
+    window.cuy.window.expand();
+  };
+
+  // Crece la ventana solo cuando el panel de personalización está abierto.
+  useEffect(() => {
+    if (mini) return;
+    window.cuy.window.setMode(showSettings ? 'expanded' : 'compact');
+  }, [mini, showSettings]);
+
+  if (mini) {
+    return <MiniCuy primary={primary} onExpand={expand} />;
+  }
+
+  return (
+    <div
+      className="cuy-card"
+      style={{ ['--cuy-primary' as string]: primary }}
+    >
+      <TopBar onCollapse={collapse} />
+
+      <Mascot onPet={() => setPhrase(randomPhrase())} />
+
+      <div className="cuy-greeting">
+        Hola {name}, soy Cuy UNDC 🐹
+      </div>
+
+      <div className="cuy-phrase no-drag" onClick={() => setPhrase(randomPhrase())}>
+        {phrase}
+      </div>
+
+      <button
+        type="button"
+        className="cuy-badge no-drag"
+        onClick={() => setShowBadgeInfo(true)}
+        title="Más info"
+      >
+        <span>{badge.icon}</span>
+        <span>{badge.label}</span>
+      </button>
+
+      <button
+        type="button"
+        className="cuy-toggle"
+        onClick={() => setShowSettings((v) => !v)}
+      >
+        {showSettings ? 'Ocultar ajustes' : 'Personalizar'}
+      </button>
+
+      {showSettings && prefs && (
+        <Settings prefs={prefs} onChange={update} />
+      )}
+
+      {showBadgeInfo && (
+        <Toast
+          message="Estamos desarrollando nuevas habilidades para Cuy UNDC. ¡Pronto novedades!"
+          onClose={() => setShowBadgeInfo(false)}
+        />
+      )}
+    </div>
+  );
+}

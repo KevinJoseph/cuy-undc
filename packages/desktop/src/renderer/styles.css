@@ -1,0 +1,312 @@
+/* Reset mínimo + ventana transparente arrastrable. */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: #1f2937;
+  overflow: hidden;
+  user-select: none;
+}
+
+.cuy-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px 14px 16px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 22px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  border: 2px solid var(--cuy-primary, #7c3aed);
+  -webkit-app-region: drag; /* arrastrar la ventana */
+}
+
+.cuy-card button,
+.cuy-card input,
+.cuy-card .no-drag {
+  -webkit-app-region: no-drag;
+}
+
+.cuy-topbar {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.cuy-iconbtn {
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  color: #374151;
+  transition: background 0.15s;
+}
+.cuy-iconbtn:hover {
+  background: rgba(0, 0, 0, 0.14);
+}
+.cuy-iconbtn.close:hover {
+  background: #ef4444;
+  color: white;
+}
+
+.cuy-mascot {
+  margin-top: 6px;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.18));
+  cursor: pointer;
+  transform-origin: center center;
+  overflow: hidden;
+}
+
+/* Salto al hacer click — squash + stretch + bounce. */
+.cuy-mascot.jumping {
+  animation: cuy-jump 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes cuy-jump {
+  0%   { transform: translateY(0)     scale(1, 1); }
+  20%  { transform: translateY(0)     scale(1.15, 0.85); } /* squash */
+  45%  { transform: translateY(-32px) scale(0.92, 1.1); }  /* stretch up */
+  70%  { transform: translateY(-10px) scale(1.02, 0.98); }
+  90%  { transform: translateY(0)     scale(1.08, 0.92); } /* land */
+  100% { transform: translateY(0)     scale(1, 1); }
+}
+
+.cuy-mascot-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  /* Mantener look pixel art al escalar. */
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.cuy-mascot-emoji {
+  font-size: 84px;
+  line-height: 1;
+}
+
+.cuy-greeting {
+  margin-top: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--cuy-primary, #7c3aed);
+}
+
+.cuy-phrase {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.35;
+  color: #4b5563;
+  min-height: 34px;
+  padding: 0 4px;
+}
+
+.cuy-badge {
+  margin-top: 10px;
+  padding: 4px 10px;
+  font-size: 11px;
+  border-radius: 999px;
+  background: var(--cuy-primary, #7c3aed);
+  color: white;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.15s, filter 0.15s;
+}
+.cuy-badge:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+.cuy-badge:active {
+  transform: scale(0.96);
+}
+
+.cuy-settings {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cuy-settings label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #6b7280;
+  letter-spacing: 0.04em;
+}
+
+.cuy-settings input[type='text'] {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 5px 8px;
+  font-size: 12px;
+  outline: none;
+}
+.cuy-settings input[type='text']:focus {
+  border-color: var(--cuy-primary, #7c3aed);
+}
+
+.cuy-settings input[type='color'] {
+  width: 100%;
+  height: 26px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.cuy-toggle {
+  margin-top: 8px;
+  background: transparent;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: #6b7280;
+  cursor: pointer;
+}
+.cuy-toggle:hover {
+  border-color: var(--cuy-primary, #7c3aed);
+  color: var(--cuy-primary, #7c3aed);
+}
+
+/* ===== Modo mini: botón circular flotante con la mascota ===== */
+.cuy-mini {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 3px solid var(--cuy-primary, #7c3aed);
+  background: rgba(255, 255, 255, 0.94);
+  cursor: pointer;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  -webkit-app-region: no-drag;
+  transition: transform 0.18s;
+}
+.cuy-mini {
+  cursor: grab;
+}
+.cuy-mini:hover {
+  transform: scale(1.06);
+}
+.cuy-mini:active {
+  cursor: grabbing;
+  transform: scale(0.94);
+}
+.cuy-mini-img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+}
+.cuy-mini-emoji {
+  font-size: 40px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* ===== Toast / modal in-app ===== */
+.cuy-toast-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  border-radius: 22px;
+  display: grid;
+  place-items: center;
+  z-index: 10;
+  animation: cuy-fade-in 0.18s ease-out;
+}
+
+.cuy-toast {
+  width: calc(100% - 32px);
+  background: white;
+  border: 2px solid var(--cuy-primary, #7c3aed);
+  border-radius: 14px;
+  padding: 14px 14px 12px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  animation: cuy-pop-in 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cuy-toast-emoji {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.cuy-toast-msg {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #374151;
+}
+
+.cuy-toast-close {
+  margin-top: 4px;
+  background: var(--cuy-primary, #7c3aed);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 5px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.cuy-toast-close:hover {
+  filter: brightness(1.1);
+}
+
+@keyframes cuy-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes cuy-pop-in {
+  0%   { opacity: 0; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1); }
+}
