@@ -1,7 +1,11 @@
 import { app } from 'electron';
 import { promises as fs } from 'node:fs';
 import { join } from 'node:path';
-import type { UserPreferences } from '../shared/types';
+import {
+  DEFAULT_PRIMARY_COLOR,
+  LEGACY_PRIMARY_COLOR,
+  type UserPreferences
+} from '../shared/types';
 
 /**
  * Persistencia simple de preferencias en JSON local dentro de userData.
@@ -10,7 +14,7 @@ import type { UserPreferences } from '../shared/types';
 
 const DEFAULTS: UserPreferences = {
   studentName: '',
-  primaryColor: '#7c3aed'
+  primaryColor: DEFAULT_PRIMARY_COLOR
 };
 
 function filePath(): string {
@@ -21,7 +25,11 @@ export async function loadPrefs(): Promise<UserPreferences> {
   try {
     const raw = await fs.readFile(filePath(), 'utf-8');
     const parsed = JSON.parse(raw) as Partial<UserPreferences>;
-    return { ...DEFAULTS, ...parsed };
+    const next = { ...DEFAULTS, ...parsed };
+    if (next.primaryColor === LEGACY_PRIMARY_COLOR) {
+      next.primaryColor = DEFAULT_PRIMARY_COLOR;
+    }
+    return next;
   } catch {
     return { ...DEFAULTS };
   }

@@ -7,6 +7,7 @@ import { Mascot } from './Mascot';
 import { Settings } from './Settings';
 import { MiniCuy } from './MiniCuy';
 import { Toast } from './Toast';
+import { DEFAULT_PRIMARY_COLOR } from '../../shared/types';
 
 /**
  * Componente raíz. Compone la tarjeta flotante.
@@ -20,8 +21,9 @@ export function App(): JSX.Element {
   const [showBadgeInfo, setShowBadgeInfo] = useState(false);
 
   const badge = useMemo(() => badgeForDate(), []);
-  const primary = prefs?.primaryColor ?? '#7c3aed';
-  const name = prefs?.studentName ?? '';
+  const primary = prefs?.primaryColor ?? DEFAULT_PRIMARY_COLOR;
+  const name = prefs?.studentName.trim() ?? '';
+  const greeting = name ? `Hola ${name}, soy Cuy UNDC 🐹` : 'Hola! soy cuy-undc';
 
   const collapse = (): void => {
     setMini(true);
@@ -52,9 +54,7 @@ export function App(): JSX.Element {
 
       <Mascot onPet={() => setPhrase(randomPhrase())} />
 
-      <div className="cuy-greeting">
-        Hola {name}, soy Cuy UNDC 🐹
-      </div>
+      <div className="cuy-greeting">{greeting}</div>
 
       <div className="cuy-phrase no-drag" onClick={() => setPhrase(randomPhrase())}>
         {phrase}

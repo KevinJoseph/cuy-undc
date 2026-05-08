@@ -10,6 +10,9 @@ export interface UserPreferences {
   primaryColor: string;
 }
 
+export const DEFAULT_PRIMARY_COLOR = '#f59e0b';
+export const LEGACY_PRIMARY_COLOR = '#7c3aed';
+
 export interface DailyBadge {
   /** Fecha ISO (YYYY-MM-DD) a la que aplica la insignia. */
   date: string;

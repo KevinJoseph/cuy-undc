@@ -22,7 +22,9 @@ program
   .command('start', { isDefault: true })
   .description('Despierta a Cuy UNDC en el escritorio')
   .action(() => {
-    console.log('🐹 Cuy UNDC está despertando...');
+    console.log('Cuy UNDC esta despertando... ✨');
+    console.log('Listo: busca la ventanita en tu escritorio. 🐹');
+    console.log('Desarrollado con ❤️ por Team Satoshi.');
     launchElectron();
   });
 
@@ -48,8 +50,14 @@ function launchElectron(): void {
   const electronArgs = [desktopEntry, ...resolveElectronArgs()];
 
   const child = spawn(electronBin, electronArgs, {
-    stdio: 'inherit',
+    stdio: ['inherit', 'inherit', 'pipe'],
     detached: false
+  });
+
+  child.stderr?.setEncoding('utf8');
+  child.stderr?.on('data', (chunk: string) => {
+    const output = formatElectronErrorOutput(chunk);
+    if (output) process.stderr.write(output);
   });
 
   child.on('exit', (code) => process.exit(code ?? 0));
@@ -57,6 +65,25 @@ function launchElectron(): void {
     console.error('❌ Error al lanzar Electron:', err.message);
     process.exit(1);
   });
+}
+
+function formatElectronErrorOutput(chunk: string): string {
+  return chunk
+    .split(/\r?\n/)
+    .filter((line) => line.trim().length > 0)
+    .filter((line) => !isNoisyElectronLog(line))
+    .map((line) => `Electron: ${line}\n`)
+    .join('');
+}
+
+function isNoisyElectronLog(line: string): boolean {
+  return [
+    'gl_surface_presentation_helper.cc',
+    'GetVSyncParametersIfAvailable() failed',
+    'libva error',
+    'MESA-LOADER',
+    'DevTools listening on'
+  ].some((pattern) => line.includes(pattern));
 }
 
 function resolveElectronArgs(): string[] {
