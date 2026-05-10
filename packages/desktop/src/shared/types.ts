@@ -28,6 +28,8 @@ export interface DailyBadge {
  */
 export type WindowMode = 'compact' | 'expanded' | 'mini';
 
+export type UnsupportedReason = 'dev' | 'npx';
+
 export type UpdateStatus =
   | { kind: 'idle' }
   | { kind: 'checking' }
@@ -36,7 +38,7 @@ export type UpdateStatus =
   | { kind: 'downloading'; percent: number }
   | { kind: 'downloaded'; version: string }
   | { kind: 'error'; message: string }
-  | { kind: 'unsupported'; message: string };
+  | { kind: 'unsupported'; reason: UnsupportedReason; message: string };
 
 export interface CuyAPI {
   app: {

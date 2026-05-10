@@ -1,5 +1,4 @@
 import type { UserPreferences } from '../../shared/types';
-import { UpdateButton } from './UpdateButton';
 
 interface SettingsProps {
   prefs: UserPreferences;
@@ -29,8 +28,6 @@ export function Settings({ prefs, onChange }: SettingsProps): JSX.Element {
         value={prefs.primaryColor}
         onChange={(e) => void onChange({ primaryColor: e.target.value })}
       />
-
-      <UpdateButton />
     </div>
   );
 }

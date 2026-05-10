@@ -21,14 +21,21 @@ function broadcast(status: UpdateStatus): void {
 export function registerUpdater(): void {
   ipcMain.handle('updater:get-status', () => lastStatus);
 
-  // En dev no hay binario instalado — no podemos auto-actualizar.
+  // En dev / npx no hay binario instalado — distinguimos el motivo para mensajes claros.
   if (!app.isPackaged) {
-    ipcMain.handle('updater:check', async () => {
-      broadcast({
-        kind: 'unsupported',
-        message: 'Auto-actualización solo disponible en la app instalada.'
-      });
-    });
+    const isDev = process.env.NODE_ENV === 'development';
+    lastStatus = isDev
+      ? {
+          kind: 'unsupported',
+          reason: 'dev',
+          message: 'Modo desarrollo: la auto-actualización solo funciona en la app instalada de Windows.'
+        }
+      : {
+          kind: 'unsupported',
+          reason: 'npx',
+          message: 'Estás usando npx. Para actualizar ejecuta:\nnpx cuy-undc@latest'
+        };
+    ipcMain.handle('updater:check', async () => {});
     ipcMain.handle('updater:install', async () => {});
     return;
   }

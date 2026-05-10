@@ -12,11 +12,14 @@ export function useUpdater(): {
 } {
   const [status, setStatus] = useState<UpdateStatus>({ kind: 'idle' });
 
-  useEffect(() => window.cuy.updater.onStatus(setStatus), []);
+  useEffect(() => {
+    if (!window.cuy?.updater) return;
+    return window.cuy.updater.onStatus(setStatus);
+  }, []);
 
   return {
     status,
-    check: () => void window.cuy.updater.check(),
-    install: () => void window.cuy.updater.install()
+    check: () => void window.cuy?.updater?.check(),
+    install: () => void window.cuy?.updater?.install()
   };
 }

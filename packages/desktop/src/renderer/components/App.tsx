@@ -7,6 +7,7 @@ import { Mascot } from './Mascot';
 import { Settings } from './Settings';
 import { MiniCuy } from './MiniCuy';
 import { Toast } from './Toast';
+import { UpdateButton } from './UpdateButton';
 import { DEFAULT_PRIMARY_COLOR } from '../../shared/types';
 
 /**
@@ -98,6 +99,8 @@ export function App(): JSX.Element {
       <div className="cuy-version no-drag" title={`Versión actual: ${appVersion}`}>
         V. {appVersion}
       </div>
+
+      <UpdateButton />
 
       {showBadgeInfo && (
         <Toast

@@ -190,40 +190,77 @@ body,
   padding: 0;
 }
 
-.cuy-updater {
-  margin-top: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.cuy-update-btn {
-  background: var(--cuy-primary, #f59e0b);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 6px 10px;
-  font-size: 11px;
-  font-weight: 600;
+.cuy-update-pill {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px 3px 8px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #374151;
   cursor: pointer;
   font-family: inherit;
-  transition: filter 0.15s, transform 0.15s;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  transition: background 0.15s, transform 0.15s, border-color 0.15s;
 }
-.cuy-update-btn:hover:not(:disabled) {
-  filter: brightness(1.1);
+.cuy-update-pill:hover:not(:disabled) {
+  background: white;
+  border-color: rgba(0, 0, 0, 0.18);
 }
-.cuy-update-btn:active:not(:disabled) {
-  transform: scale(0.97);
+.cuy-update-pill:active:not(:disabled) {
+  transform: scale(0.96);
 }
-.cuy-update-btn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
+.cuy-update-pill:disabled {
+  cursor: default;
+  opacity: 0.85;
 }
 
-.cuy-update-hint {
-  font-size: 10px;
-  color: #6b7280;
-  line-height: 1.3;
+.cuy-update-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.18);
+  flex-shrink: 0;
+}
+
+.cuy-update-checking .cuy-update-led,
+.cuy-update-available .cuy-update-led,
+.cuy-update-downloading .cuy-update-led {
+  background: #f59e0b;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+  animation: cuy-update-blink 1s ease-in-out infinite;
+}
+
+.cuy-update-downloaded .cuy-update-led {
+  background: #22c55e;
+  animation: cuy-update-pulse 1.4s ease-in-out infinite;
+}
+
+.cuy-update-error .cuy-update-led {
+  background: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+.cuy-update-unsupported .cuy-update-led {
+  background: #9ca3af;
+  box-shadow: 0 0 0 2px rgba(156, 163, 175, 0.2);
+}
+
+@keyframes cuy-update-blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
+}
+@keyframes cuy-update-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
+  50%      { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
 }
 
 .cuy-toggle {
@@ -333,6 +370,7 @@ body,
   font-size: 12px;
   line-height: 1.4;
   color: #374151;
+  white-space: pre-line;
 }
 
 .cuy-toast-close {

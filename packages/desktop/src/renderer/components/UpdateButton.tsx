@@ -1,79 +1,97 @@
+import { useState } from 'react';
 import { useUpdater } from '../hooks/useUpdater';
+import { Toast } from './Toast';
 import type { UpdateStatus } from '../../shared/types';
 
 /**
- * Botón "Buscar actualización" + estado del updater.
- * En la versión instalada (NSIS), descarga e instala desde GitHub Releases.
+ * Indicador minimalista de actualización en la esquina abajo-derecha.
+ * Click = buscar / instalar / explicar según el estado actual.
  */
-export function UpdateButton(): JSX.Element {
+export function UpdateButton(): JSX.Element | null {
   const { status, check, install } = useUpdater();
-  const { label, action, hint, disabled } = describe(status, check, install);
+  const [showInfo, setShowInfo] = useState(false);
+
+  const view = describe(status, check, install, () => setShowInfo(true));
+  if (!view) return null;
 
   return (
-    <div className="cuy-updater no-drag">
+    <>
       <button
         type="button"
-        className="cuy-update-btn"
-        onClick={action}
-        disabled={disabled}
+        className={`cuy-update-pill no-drag cuy-update-${status.kind}`}
+        onClick={view.action}
+        disabled={view.disabled}
+        title={view.title}
+        aria-label={view.title}
       >
-        {label}
+        <span className="cuy-update-led" />
+        <span className="cuy-update-label">{view.label}</span>
       </button>
-      {hint && <span className="cuy-update-hint">{hint}</span>}
-    </div>
+      {showInfo && status.kind === 'unsupported' && (
+        <Toast
+          message={status.message}
+          durationMs={0}
+          onClose={() => setShowInfo(false)}
+        />
+      )}
+    </>
   );
+}
+
+interface View {
+  label: string;
+  title: string;
+  action: () => void;
+  disabled: boolean;
 }
 
 function describe(
   status: UpdateStatus,
   check: () => void,
-  install: () => void
-): { label: string; action: () => void; hint?: string; disabled: boolean } {
+  install: () => void,
+  showInfo: () => void
+): View | null {
   switch (status.kind) {
     case 'idle':
-      return { label: 'Buscar actualización', action: check, disabled: false };
+      return { label: 'Actualizar', title: 'Buscar actualización', action: check, disabled: false };
     case 'checking':
-      return { label: 'Buscando...', action: () => {}, disabled: true };
+      return { label: 'Buscando...', title: 'Buscando actualización', action: () => {}, disabled: true };
     case 'not-available':
       return {
-        label: 'Buscar actualización',
+        label: 'Al día',
+        title: `Estás en la última versión (${status.currentVersion})`,
         action: check,
-        hint: `Estás en la última versión (${status.currentVersion}).`,
         disabled: false
       };
     case 'available':
       return {
-        label: 'Descargando...',
+        label: 'Descargando',
+        title: `Descargando ${status.version}...`,
         action: () => {},
-        hint: `Nueva versión ${status.version} disponible.`,
         disabled: true
       };
     case 'downloading':
       return {
         label: `Descargando ${status.percent}%`,
+        title: `Descargando ${status.percent}%`,
         action: () => {},
         disabled: true
       };
     case 'downloaded':
       return {
-        label: 'Reiniciar e instalar',
+        label: 'Reiniciar',
+        title: `Versión ${status.version} lista. Click para reiniciar e instalar.`,
         action: install,
-        hint: `Versión ${status.version} lista.`,
         disabled: false
       };
     case 'error':
-      return {
-        label: 'Reintentar',
-        action: check,
-        hint: `Error: ${status.message}`,
-        disabled: false
-      };
+      return { label: 'Reintentar', title: `Error: ${status.message}`, action: check, disabled: false };
     case 'unsupported':
       return {
-        label: 'No disponible',
-        action: () => {},
-        hint: status.message,
-        disabled: true
+        label: 'Actualizar',
+        title: 'Cómo actualizar',
+        action: showInfo,
+        disabled: false
       };
   }
 }
