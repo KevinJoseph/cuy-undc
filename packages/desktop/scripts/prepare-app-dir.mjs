@@ -2,6 +2,7 @@ import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execSync } from 'node:child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -32,15 +33,29 @@ writeFileSync(
   `${JSON.stringify({ version: displayVersion }, null, 2)}\n`
 );
 
+const runtimeDeps = {};
+if (pkg.dependencies?.['electron-updater']) {
+  runtimeDeps['electron-updater'] = pkg.dependencies['electron-updater'];
+}
+
 const appPackageJson = {
   name: pkg.name,
   version: pkg.version,
   description: pkg.description,
   main: 'dist/main/index.js',
   author: pkg.author,
-  license: pkg.license
+  license: pkg.license,
+  dependencies: runtimeDeps
 };
 
 writeFileSync(resolve(appDir, 'package.json'), `${JSON.stringify(appPackageJson, null, 2)}\n`);
+
+if (Object.keys(runtimeDeps).length > 0) {
+  console.log('Installing runtime dependencies in app/ ...');
+  execSync('npm install --omit=dev --no-package-lock --no-audit --no-fund', {
+    cwd: appDir,
+    stdio: 'inherit'
+  });
+}
 
 console.log(`Prepared standalone app directory at ${appDir}`);

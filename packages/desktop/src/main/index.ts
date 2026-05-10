@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain, screen } from 'electron';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { loadPrefs, savePrefs } from './prefs-store';
+import { registerUpdater } from './updater';
 import type { UserPreferences, WindowMode } from '../shared/types';
 
 /**
@@ -145,6 +146,7 @@ function registerIpc(): void {
 
 app.whenReady().then(() => {
   registerIpc();
+  registerUpdater();
   createWindow();
 
   app.on('activate', () => {

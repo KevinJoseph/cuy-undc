@@ -28,10 +28,28 @@ export interface DailyBadge {
  */
 export type WindowMode = 'compact' | 'expanded' | 'mini';
 
+export type UpdateStatus =
+  | { kind: 'idle' }
+  | { kind: 'checking' }
+  | { kind: 'not-available'; currentVersion: string }
+  | { kind: 'available'; version: string }
+  | { kind: 'downloading'; percent: number }
+  | { kind: 'downloaded'; version: string }
+  | { kind: 'error'; message: string }
+  | { kind: 'unsupported'; message: string };
+
 export interface CuyAPI {
   app: {
     /** Devuelve la versión visible para el usuario final. */
     getVersion: () => Promise<string>;
+  };
+  updater: {
+    /** Inicia búsqueda de nueva versión publicada. */
+    check: () => Promise<void>;
+    /** Reinicia la app e instala la versión descargada. */
+    install: () => Promise<void>;
+    /** Suscribe a cambios de estado del updater. Devuelve función para desuscribir. */
+    onStatus: (cb: (status: UpdateStatus) => void) => () => void;
   };
   window: {
     close: () => void;

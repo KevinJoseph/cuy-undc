@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import type { CuyAPI, UserPreferences, WindowMode } from '../shared/types';
+import type { CuyAPI, UpdateStatus, UserPreferences, WindowMode } from '../shared/types';
 
 /**
  * Puente seguro entre renderer y main.
@@ -20,6 +20,18 @@ const api: CuyAPI = {
     get: () => ipcRenderer.invoke('prefs:get') as Promise<UserPreferences>,
     set: (next: Partial<UserPreferences>) =>
       ipcRenderer.invoke('prefs:set', next) as Promise<UserPreferences>
+  },
+  updater: {
+    check: () => ipcRenderer.invoke('updater:check') as Promise<void>,
+    install: () => ipcRenderer.invoke('updater:install') as Promise<void>,
+    onStatus: (cb: (status: UpdateStatus) => void) => {
+      const listener = (_evt: unknown, status: UpdateStatus): void => cb(status);
+      ipcRenderer.on('updater:status', listener);
+      void (ipcRenderer.invoke('updater:get-status') as Promise<UpdateStatus>).then(cb);
+      return () => {
+        ipcRenderer.removeListener('updater:status', listener);
+      };
+    }
   }
 };
 
