@@ -130,6 +130,26 @@ body,
   padding: 0 4px;
 }
 
+.cuy-actions {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 6px;
+  width: 100%;
+  justify-content: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 2px 0;
+}
+.cuy-actions::-webkit-scrollbar {
+  display: none;
+}
+.cuy-actions .cuy-badge {
+  margin-top: 0;
+  flex-shrink: 0;
+}
+
 .cuy-badge {
   margin-top: 10px;
   padding: 4px 10px;

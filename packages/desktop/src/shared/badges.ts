@@ -1,8 +1,8 @@
 import type { DailyBadge } from './types.js';
 
 const DEFAULT_BADGE: Omit<DailyBadge, 'date'> = {
-  icon: '☕',
-  label: 'Café & Código'
+  icon: '🚪',
+  label: 'Lobby'
 };
 
 /** Devuelve la insignia fija de la app. */

@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(git -C /home/kev/Desktop/project/cuy-undc log --oneline -5)",
+      "Bash(npm view *)",
+      "Bash(npm run *)",
+      "Bash(git -C /home/kev/Desktop/project/cuy-undc status --short)"
     ]
   }
 }

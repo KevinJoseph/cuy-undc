@@ -7,7 +7,15 @@ import { Mascot } from './Mascot';
 import { Settings } from './Settings';
 import { MiniCuy } from './MiniCuy';
 import { UpdateButton } from './UpdateButton';
+import { Toast } from './Toast';
 import { DEFAULT_PRIMARY_COLOR } from '../../shared/types';
+
+type ModalKind = 'groups' | 'credits' | null;
+
+const MODAL_MESSAGES: Record<Exclude<ModalKind, null>, string> = {
+  groups: 'Groups está en desarrollo. ¡Pronto podrás unirte a grupos de estudio!',
+  credits: 'En desarrollo. ¡Pronto podrás ver los créditos del proyecto!'
+};
 
 /**
  * Componente raíz. Compone la tarjeta flotante.
@@ -19,6 +27,7 @@ export function App(): JSX.Element {
   const [showSettings, setShowSettings] = useState(false);
   const [mini, setMini] = useState(false);
   const [appVersion, setAppVersion] = useState('...');
+  const [modal, setModal] = useState<ModalKind>(null);
 
   const badge = useMemo(() => badgeForDate(), []);
   const primary = prefs?.primaryColor ?? DEFAULT_PRIMARY_COLOR;
@@ -72,15 +81,37 @@ export function App(): JSX.Element {
         {phrase}
       </div>
 
-      <button
-        type="button"
-        className="cuy-badge no-drag"
-        onClick={() => void window.cuy.app.openExternal('https://sala.cuy-undc.net.pe')}
-        title="Abrir sala de estudio"
-      >
-        <span>{badge.icon}</span>
-        <span>{badge.label}</span>
-      </button>
+      <div className="cuy-actions no-drag">
+        <button
+          type="button"
+          className="cuy-badge no-drag"
+          onClick={() => void window.cuy.app.openExternal('https://sala.cuy-undc.net.pe')}
+          title="Abrir sala de estudio"
+        >
+          <span>{badge.icon}</span>
+          <span>{badge.label}</span>
+        </button>
+
+        <button
+          type="button"
+          className="cuy-badge no-drag"
+          onClick={() => setModal('groups')}
+          title="Grupos de estudio"
+        >
+          <span>👥</span>
+          <span>Groups</span>
+        </button>
+
+        <button
+          type="button"
+          className="cuy-badge no-drag"
+          onClick={() => setModal('credits')}
+          title="Créditos"
+        >
+          <span>⭐</span>
+          <span>Credits</span>
+        </button>
+      </div>
 
       <button
         type="button"
@@ -100,7 +131,13 @@ export function App(): JSX.Element {
 
       <UpdateButton />
 
-
+      {modal && (
+        <Toast
+          message={MODAL_MESSAGES[modal]}
+          durationMs={0}
+          onClose={() => setModal(null)}
+        />
+      )}
     </div>
   );
 }
