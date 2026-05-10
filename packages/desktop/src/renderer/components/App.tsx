@@ -32,7 +32,7 @@ export function App(): JSX.Element {
   const badge = useMemo(() => badgeForDate(), []);
   const primary = prefs?.primaryColor ?? DEFAULT_PRIMARY_COLOR;
   const name = prefs?.studentName.trim() ?? '';
-  const greeting = name ? `Hola ${name}, soy Cuy UNDC 🐹` : 'Hola! soy cuy-undc';
+  const greeting = name ? `Hola ${name}, soy Cuy UNDC 🐹` : 'Soy cuy-undc';
 
   const collapse = (): void => {
     setMini(true);
