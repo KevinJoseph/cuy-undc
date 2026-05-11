@@ -1,6 +1,6 @@
 {
   "name": "@cuy-undc/desktop",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Electron desktop pet for Cuy UNDC",
   "license": "MIT",
   "author": "Cuy UNDC",
@@ -60,7 +60,7 @@
           ]
         }
       ],
-      "artifactName": "${productName}-${version}-${arch}.${ext}"
+      "artifactName": "CuyUNDC-${version}-${arch}.${ext}"
     },
     "nsis": {
       "oneClick": false,
