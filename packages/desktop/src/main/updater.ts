@@ -41,7 +41,20 @@ export function registerUpdater(): void {
   }
 
   // Carga perezosa: el módulo solo existe en producción dentro de app/node_modules.
-  let autoUpdater: typeof import('electron-updater').autoUpdater;
+  // La interfaz evita requerir electron-updater en tiempo de compilación de tsc.
+  interface AutoUpdater {
+    autoDownload: boolean;
+    autoInstallOnAppQuit: boolean;
+    on(event: 'checking-for-update', listener: () => void): this;
+    on(event: 'update-available', listener: (info: { version: string }) => void): this;
+    on(event: 'update-not-available', listener: () => void): this;
+    on(event: 'download-progress', listener: (progress: { percent: number }) => void): this;
+    on(event: 'update-downloaded', listener: (info: { version: string }) => void): this;
+    on(event: 'error', listener: (err: Error) => void): this;
+    checkForUpdates(): Promise<unknown>;
+    quitAndInstall(): void;
+  }
+  let autoUpdater: AutoUpdater;
   try {
     ({ autoUpdater } = require('electron-updater'));
   } catch (err) {
