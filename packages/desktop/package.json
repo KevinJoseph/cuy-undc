@@ -15,7 +15,7 @@
     "prepare:app": "node ./scripts/prepare-app-dir.mjs",
     "start": "electron dist/main/index.js",
     "typecheck": "tsc -p tsconfig.main.json --noEmit && tsc -p tsconfig.renderer.json --noEmit",
-    "dist:win": "npm run build && npm run prepare:app && electron-builder --win nsis portable",
+    "dist:win": "npm run build && npm run prepare:app && electron-builder --win nsis",
     "dist:dir": "npm run build && npm run prepare:app && electron-builder --dir"
   },
   "dependencies": {
@@ -58,25 +58,16 @@
           "arch": [
             "x64"
           ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64"
-          ]
         }
       ],
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": "always",
       "shortcutName": "Cuy UNDC",
-      "runAfterFinish": true,
-      "artifactName": "${productName}-${version}-Setup-${arch}.${ext}"
-    },
-    "portable": {
-      "artifactName": "${productName}-${version}-Portable-${arch}.${ext}"
+      "runAfterFinish": true
     }
   }
 }
