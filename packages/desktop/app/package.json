@@ -1,6 +1,6 @@
 {
   "name": "@cuy-undc/desktop",
-  "version": "0.1.7",
+  "version": "0.1.10",
   "description": "Electron desktop pet for Cuy UNDC",
   "main": "dist/main/index.js",
   "author": "Cuy UNDC",
