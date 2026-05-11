@@ -7,7 +7,8 @@ import type { CuyAPI, UpdateStatus, UserPreferences, WindowMode } from '../share
  */
 const api: CuyAPI = {
   app: {
-    getVersion: () => ipcRenderer.invoke('app:get-version') as Promise<string>
+    getVersion: () => ipcRenderer.invoke('app:get-version') as Promise<string>,
+    openExternal: (url: string) => ipcRenderer.invoke('app:open-external', url) as Promise<void>
   },
   window: {
     close: () => ipcRenderer.send('window:close'),

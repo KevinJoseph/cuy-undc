@@ -6,7 +6,6 @@ import { TopBar } from './TopBar';
 import { Mascot } from './Mascot';
 import { Settings } from './Settings';
 import { MiniCuy } from './MiniCuy';
-import { Toast } from './Toast';
 import { UpdateButton } from './UpdateButton';
 import { DEFAULT_PRIMARY_COLOR } from '../../shared/types';
 
@@ -19,7 +18,6 @@ export function App(): JSX.Element {
   const [phrase, setPhrase] = useState<string>(() => randomPhrase());
   const [showSettings, setShowSettings] = useState(false);
   const [mini, setMini] = useState(false);
-  const [showBadgeInfo, setShowBadgeInfo] = useState(false);
   const [appVersion, setAppVersion] = useState('...');
 
   const badge = useMemo(() => badgeForDate(), []);
@@ -77,8 +75,8 @@ export function App(): JSX.Element {
       <button
         type="button"
         className="cuy-badge no-drag"
-        onClick={() => setShowBadgeInfo(true)}
-        title="Más info"
+        onClick={() => void window.cuy.app.openExternal('https://sala.cuy-undc.net.pe')}
+        title="Abrir sala de estudio"
       >
         <span>{badge.icon}</span>
         <span>{badge.label}</span>
@@ -102,12 +100,7 @@ export function App(): JSX.Element {
 
       <UpdateButton />
 
-      {showBadgeInfo && (
-        <Toast
-          message="Estamos desarrollando nuevas habilidades para Cuy UNDC. ¡Pronto novedades!"
-          onClose={() => setShowBadgeInfo(false)}
-        />
-      )}
+
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, screen } from 'electron';
+import { app, BrowserWindow, ipcMain, screen, shell } from 'electron';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { loadPrefs, savePrefs } from './prefs-store';
@@ -142,6 +142,7 @@ function registerIpc(): void {
     savePrefs(patch)
   );
   ipcMain.handle('app:get-version', async () => resolveDisplayedVersion());
+  ipcMain.handle('app:open-external', (_evt, url: string) => shell.openExternal(url));
 }
 
 app.whenReady().then(() => {

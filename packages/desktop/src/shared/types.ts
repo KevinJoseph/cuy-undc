@@ -44,6 +44,8 @@ export interface CuyAPI {
   app: {
     /** Devuelve la versión visible para el usuario final. */
     getVersion: () => Promise<string>;
+    /** Abre una URL en el navegador predeterminado del sistema. */
+    openExternal: (url: string) => Promise<void>;
   };
   updater: {
     /** Inicia búsqueda de nueva versión publicada. */
