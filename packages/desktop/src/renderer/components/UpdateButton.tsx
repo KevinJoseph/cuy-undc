@@ -58,7 +58,7 @@ function describe(
       return { label: 'Buscando...', title: 'Buscando actualización', action: () => {}, disabled: true };
     case 'not-available':
       return {
-        label: 'Al día',
+        label: 'Actualizado',
         title: `Estás en la última versión (${status.currentVersion})`,
         action: check,
         disabled: false
